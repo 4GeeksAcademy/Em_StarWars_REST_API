@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, Planet
 #from models import Person
 
 app = Flask(__name__)
@@ -34,19 +34,38 @@ def handle_invalid_usage(error):
 # generate sitemap with all your endpoints
 @app.route('/')
 def sitemap():
-    return generate_sitemap(app)
+    return generate_sitemap(app) 
 
-@app.route('/user', methods=['GET'])
+@app.route('/user', methods=['GET'])    
 def get_user():
     all_users = User.query.all()
-    print(results)
-    results = list(map(lambda user : user.serialize() ,all_users))
-    
-    # response_body = {
-    #     "msg": "Hello, this is your GET /user response "
-    # }
+    map_user = list(map(lambda user : user.serialize() ,all_users))
+    return jsonify(map_user), 200
 
-    return jsonify(results), 200
+# @app.route('/planet', methods=['GET'])    
+# def get_planet():
+#     all_planets = Planet.query.all()
+#     map_planet = list(map(lambda planet : planet.serialize() ,all_planets))
+#     return jsonify(map_planet), 200
+
+# @app.route('/planet', methods=['GET'])
+# def get_planets():
+#     all_planets = Planet.query.all()
+#     mapped_planets = map(lambda planet: planet.serialize(), all_planets)
+#     serialized_planets = list(mapped_planets)
+#     return jsonify(serialized_planets), 200
+
+@app.route('/planet', methods=['GET'])
+def get_planet():
+     planet = Planet.query.get(1)
+     serialized_planet = planet.serialize()
+     return jsonify(serialized_planet), 200
+
+
+
+
+
+
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
