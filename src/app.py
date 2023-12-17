@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planet
+from models import db, User, Planet, Characters
 #from models import Person
 
 app = Flask(__name__)
@@ -36,30 +36,47 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app) 
 
+ # brings all users data
 @app.route('/user', methods=['GET'])    
 def get_user():
     all_users = User.query.all()
     map_user = list(map(lambda user : user.serialize() ,all_users))
     return jsonify(map_user), 200
 
-# @app.route('/planet', methods=['GET'])    
-# def get_planet():
-#     all_planets = Planet.query.all()
-#     map_planet = list(map(lambda planet : planet.serialize() ,all_planets))
-#     return jsonify(map_planet), 200
+ # brings one specific user data
+@app.route('/user/<int:user_id>', methods=['GET'])    
+def get_specific_user(user_id):
+    specific_user = User.query.filter_by(id = user_id).first()
+    return jsonify(specific_user.serialize()), 200
 
-# @app.route('/planet', methods=['GET'])
-# def get_planets():
-#     all_planets = Planet.query.all()
-#     mapped_planets = map(lambda planet: planet.serialize(), all_planets)
-#     serialized_planets = list(mapped_planets)
-#     return jsonify(serialized_planets), 200
+ # brings all characters data
+@app.route('/characters', methods=['GET'])    
+def get_characters():
+    all_characters = Characters.query.all()
+    map_characters = list(map(lambda character : character.serialize() ,all_characters))
+    return jsonify(map_characters), 200
 
-@app.route('/planet', methods=['GET'])
+@app.route('/characters/<int:characters_id>', methods=['GET'])    
+def get_specific_character(characters_id):
+    specific_characters = Characters.query.filter_by(id = characters_id).first()
+    return jsonify(specific_characters.serialize()), 200
+
+
+
+
+
+
+
+
+
+
+ # brings all planets data
+@app.route('/planet', methods=['GET'])    
 def get_planet():
-     planet = Planet.query.get(1)
-     serialized_planet = planet.serialize()
-     return jsonify(serialized_planet), 200
+    all_planets = Planet.query.all()
+    map_planet = list(map(lambda planet : planet.serialize() ,all_planets))
+    return jsonify(map_planet), 200
+
 
 
 
