@@ -56,6 +56,7 @@ def get_characters():
     map_characters = list(map(lambda character : character.serialize() ,all_characters))
     return jsonify(map_characters), 200
 
+# Brings specific character data
 @app.route('/characters/<int:characters_id>', methods=['GET'])    
 def get_specific_character(characters_id):
     specific_characters = Characters.query.filter_by(id = characters_id).first()
@@ -70,7 +71,7 @@ def get_specific_character(characters_id):
 
 
 
- # brings all planets data
+ # brings all planets data ---------------------------NO FUNCIONA 
 @app.route('/planet', methods=['GET'])    
 def get_planet():
     all_planets = Planet.query.all()
