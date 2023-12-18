@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Planet, Characters
+from models import db, User, Characters, Planets
 #from models import Person
 
 app = Flask(__name__)
@@ -35,6 +35,8 @@ def handle_invalid_usage(error):
 @app.route('/')
 def sitemap():
     return generate_sitemap(app) 
+
+
 
  # brings all users data
 @app.route('/user', methods=['GET'])    
@@ -64,21 +66,11 @@ def get_specific_character(characters_id):
 
 
 
-
-
-
-
-
-
-
- # brings all planets data ---------------------------NO FUNCIONA 
-@app.route('/planet', methods=['GET'])    
-def get_planet():
-    all_planets = Planet.query.all()
-    map_planet = list(map(lambda planet : planet.serialize() ,all_planets))
-    return jsonify(map_planet), 200
-
-
+@app.route('/planets', methods=['GET'])    
+def get_planets():
+    all_planets = Planets.query.all()
+    map_planets = list(map(lambda planet : planet.serialize() ,all_planets))
+    return jsonify(map_planets), 200
 
 
 
